@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+</head>
+
+<body>
+  <%- include('./error_messages'); %>
+    <% if(isAuth) { %>
+      <%- include('./header_login'); %>
+        <div class="col-md-6">
+          <h3>
+            <%= username %>
+          </h3>
+
+          <% if(userId==myId) { %>
+            <form action="/users/<%= userId %>" method="post" name="profile">
+              <input type="hidden" value="myprofile" />
+              <a href="javascript:profile.submit()">view my profile</a>
+            </form>
+            <br>
+            <label>
+              <h5>
+                <%= count %> posts
+              </h5>
+            </label>
+
+            <p>
+              <form action="/users/<%= userId %>/following" method="get">
+                <input type="submit" value="<%= followingCount %> following" />
+              </form>
+              <form action="/users/<%= userId %>/followers" method="get">
+                <input type="submit" value="<%= followersCount %> followers">
+              </form>
+            </p>
+
+            <form action="/" method="post">
+              <textarea required name="content" placeholder="Compose new microPost>..."></textarea>
+              <br>
+              <input class="btn btn-primary" type="submit" value="Post" />
+            </form>
+        </div>
+        <div class="col-md-6">
+          <h2>microPost Feed</h2>
+          <ul>
+            <% for(let post of posts){ %>
+              <form action="/delete/microposts/<%= post.id %>" method="post">
+                <li>
+                  <span>
+                    　投稿主：<%= username %><br>
+                    投稿内容：<%= post.content %><br>
+                    投稿日時：<%= post.created_at %><br>
+                    <input class="btn btn-primary" type="submit" value="delete" />
+                  </span>
+                </li>
+              </form>
+              <% } %>
+          </ul>
+        </div>
+        <% } else { %>
+          <form action="/users/follow/<%= userId %>" method="post">
+            <input class="btn btn-primary" type="submit" value="Follow" />
+          </form>
+          <form action="/users/unfollow/<%= userId %>" method="post">
+            <input class="btn btn-primary" type="submit" value="UnFollow" />
+          </form>
+          <br>
+          <label>
+            <h5>
+              <%= count %> posts
+            </h5>
+          </label>
+          <p>
+            <form action="/users/<%= userId %>/following" method="get">
+              <input type="submit" value="<%= followingCount %> following" />
+            </form>
+            <form action="/users/<%= userId %>/followers" method="get">
+              <input type="submit" value="<%= followersCount %> followers">
+            </form>
+          </p>
+          </div>
+
+          <div class="col-md-6">
+            <h2>microPost Feed</h2>
+            <ul>
+              <% for(let post of posts){ %>
+                <li>
+                  <span>
+                    　投稿主：<%= username %><br>
+                    投稿内容：<%= post.content %><br>
+                    投稿日時：<%= post.created_at %><br>
+                  </span>
+                </li>
+                <% } %>
+            </ul>
+          </div>
+          <% } %>
+
+            <% } else { %>
+              <%- include('./header'); %>
+                <h1>Welcome to <%= title %>
+                </h1>
+                <a class="btn btn-primary" href="/signup" role="button">Sign up now!</a>
+                <% } %>
+
+                  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+                    crossorigin="anonymous"></script>
+                  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+                    integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+                    crossorigin="anonymous"></script>
+                  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+                    integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+                    crossorigin="anonymous"></script>
+</body>
+</html>
